@@ -13,6 +13,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@js-joda/core": "^2.0.0",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "firebase-admin": "^8.10.0",
