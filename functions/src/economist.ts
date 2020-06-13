@@ -1,8 +1,18 @@
+import { LocalDate } from '@js-joda/core'
 import axios from 'axios'
 import Papa from 'papaparse'
+import { saveEconomistEcProbDatapoints } from './firestore'
 require('dotenv').config()
 
-interface EcProbDataPoint {
+export const getAndSave = async () => {
+  const datapoints = await getData()
+  const today = datapoints.filter(dp =>
+    LocalDate.parse(dp.date).equals(LocalDate.now()),
+  )
+  saveEconomistEcProbDatapoints(today)
+}
+
+export interface EcProbDataPoint {
   date: string
   party: 'democratic' | 'republican'
   win_prob: number
