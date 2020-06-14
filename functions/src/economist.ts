@@ -4,7 +4,9 @@ import Papa from 'papaparse'
 import {
   getLastTwoDatapoints,
   saveEconomistEcProbDatapoints,
+  saveTweet,
 } from './firestore'
+import { sendTweet } from './tweet'
 require('dotenv').config()
 
 export const tweetEcProb = async () => {
@@ -17,7 +19,10 @@ export const tweetEcProb = async () => {
     const lastTwo = await getLastTwoDatapoints()
 
     if (lastTwo[1].winProb !== lastTwo[0].winProb) {
-      console.log(getEcProbTweetText(lastTwo[1].winProb, lastTwo[0].winProb))
+      const tweet = await sendTweet(
+        getEcProbTweetText(lastTwo[1].winProb, lastTwo[0].winProb),
+      )
+      await saveTweet(tweet)
     }
   }
 }

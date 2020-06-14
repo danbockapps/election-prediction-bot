@@ -9,6 +9,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="/Users/danbock/code/election-prediction-b
 
 import * as admin from 'firebase-admin'
 import { EcProbDataPoint } from './economist'
+import { Tweet } from './tweet'
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -46,4 +47,15 @@ export const getLastTwoDatapoints = async () => {
   let returnable: EcProbDataPoint[] = []
   qs.forEach(doc => returnable.push(doc.data() as EcProbDataPoint))
   return returnable
+}
+
+export const saveTweet = async (tweet: Tweet) => {
+  if (tweet.id_str)
+    db.collection('tweets')
+      .doc(tweet.id_str)
+      .set({
+        id_str: tweet.id_str,
+        text: tweet.text,
+        created_at: new Date(tweet.created_at),
+      })
 }
