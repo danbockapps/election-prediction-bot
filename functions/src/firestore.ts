@@ -17,13 +17,15 @@ admin.initializeApp({
 
 const db = admin.firestore()
 
+const ECONOMIST_EC_PROB = 'EconomistEcProb'
+
 export const saveEconomistEcProbDatapoints = async (
   datapoints: EcProbDataPoint[],
 ) => {
   let batch = db.batch()
 
   datapoints.forEach(datapoint => {
-    const ref = db.collection('EconomistEcProb').doc()
+    const ref = db.collection(ECONOMIST_EC_PROB).doc()
     batch.set(ref, {
       ...datapoint,
       retrievedAt: admin.firestore.Timestamp.now(),
@@ -31,4 +33,17 @@ export const saveEconomistEcProbDatapoints = async (
   })
 
   return await batch.commit()
+}
+
+export const getLastTwoDatapoints = async () => {
+  const qs = await db
+    .collection(ECONOMIST_EC_PROB)
+    .where('party', '==', 'democratic')
+    .orderBy('retrievedAt', 'desc')
+    .limit(2)
+    .get()
+
+  let returnable: EcProbDataPoint[] = []
+  qs.forEach(doc => returnable.push(doc.data() as EcProbDataPoint))
+  return returnable
 }
