@@ -16,7 +16,7 @@
     "@js-joda/core": "^2.0.0",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
-    "firebase-admin": "^8.10.0",
+    "firebase-admin": "^11.4.1",
     "firebase-functions": "^3.6.1",
     "papaparse": "^5.2.0",
     "twitter-lite": "^0.14.0"
